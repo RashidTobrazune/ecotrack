@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - User Dashboard</title>
+    <link rel="icon" href="images/favicon (1).ico">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="user-dashboard">
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="images/favicon (12).ico" alt="EcoTrack">
+                <span>EcoTrack</span>
+            </div>
+            <ul class="nav-items">
+                <li><a href="user.html" class="active"><i class="fas fa-home"></i>Dashboard</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 class="page-title dashboard-title">User Dashboard</h1>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <img src="images/rashidlinkedinpphoto-modified.png" alt="User Profile">
+                        <span id="userName">Rashid</span>
+                    </div>
+                </div>
+            </header>
+            <div class="dashboard-grid user-dashboard-grid">
+                <!-- Bin Status Card -->
+                <div class="dashboard-card user-dashboard-card">
+                    <div class="card-header user-card-header">
+                        <i class="fas fa-trash bin-status-icon"></i>
+                        <h3 class="user-card-title">Bin Status</h3>
+                    </div>
+                    <div class="card-content user-card-content user-pie-content">
+                        <!-- Example Pie Chart (SVG) -->
+                        <!-- <svg class="user-pie-chart" width="90" height="90" viewBox="0 0 36 36">
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#4CAF50"
+                                stroke-width="3"
+                                stroke-dasharray="75, 25"
+                                />
+                            <text x="18" y="20.35" font-size="8" text-anchor="middle" fill="#333" font-weight="bold">75</text>
+                        </svg> -->
+                        <div class="user-pie-details">
+                            <div><b>Location:</b> 123 Elm Street</div>
+                            <div><b>Last Updated:</b> 2 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Schedule Card -->
+                <div class="dashboard-card user-dashboard-card">
+                    <div class="card-header user-card-header">
+                        <i class="fas fa-truck schedule-icon"></i>
+                        <h3 class="user-card-title">Next Pickup</h3>
+                    </div>
+                    <div class="card-content user-card-content">
+                        <button class="submit-btn user-schedule-btn">
+                            View Schedule
+                        </button>
+                    </div>
+                </div>
+                <!-- Recycling Stats Card -->
+                <div class="dashboard-card user-dashboard-card">
+                    <div class="card-header user-card-header">
+                        <i class="fas fa-recycle recycle-icon"></i>
+                        <h3 class="user-card-title">Recycling Stats</h3>
+                    </div>
+                    <div class="card-content user-card-content user-recycle-content">
+                        <div class="user-recycle-box">
+                            <div class="user-recycle-label">This Month</div>
+                            <div class="user-recycle-value">45 kg</div>
+                        </div>
+                        <div class="user-recycle-box">
+                            <div class="user-recycle-label">Total</div>
+                            <div class="user-recycle-value total">245 kg</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Report Full Bin Card -->
+                <div class="dashboard-card user-dashboard-card">
+                    <div class="card-header user-card-header">
+                        <i class="fas fa-exclamation-circle report-bin-icon"></i>
+                        <h3 class="user-card-title">Report Full Bin</h3>
+                    </div>
+                    <div class="card-content user-card-content">
+                        <p>Notice a bin that needs attention? Report it here.</p>
+                        <button class="submit-btn user-report-btn" id="openReportModalBtn">
+                            <i class="fas fa-exclamation-circle"></i> Report Bin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Report Bin Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-exclamation-circle report-bin-icon"></i> Report Bin</h2>
+            <div class="modal-scroll-container">
+                <form id="reportForm">
+                    <div class="form-group">
+                        <label for="binId">Bin ID *</label>
+                        <input type="text" id="binId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportedBy">Reported By *</label>
+                        <input type="text" id="reportedBy" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportTime">Time</label>
+                        <input type="text" id="reportTime" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments">Comments</label>
+                        <textarea id="comments" placeholder="Any additional information..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo of Bin *</label>
+                        <div class="photo-capture-section">
+                            <div class="photo-options">
+                                <button type="button" id="capturePhotoBtn" class="capture-btn">
+                                    <i class="fas fa-camera"></i> Take Photo
+                                </button>
+                                <button type="button" id="uploadPhotoBtn" class="upload-btn">
+                                    <i class="fas fa-upload"></i> Upload Photo
+                                </button>
+                                <input type="file" id="photoFileInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div id="photoPreview" class="photo-preview" style="display: none;">
+                                <img id="capturedImage" alt="Captured photo">
+                                <div class="photo-actions">
+                                    <button type="button" id="retakePhotoBtn" class="retake-btn">
+                                        <i class="fas fa-redo"></i> Retake
+                                    </button>
+                                    <button type="button" id="removePhotoBtn" class="remove-btn">
+                                        <i class="fas fa-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <video id="cameraVideo" autoplay style="display: none;"></video>
+                            <canvas id="photoCanvas" style="display: none;"></canvas>
+                            <div id="photoRequired" class="photo-required-message" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> Photo is required
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Modal open/close logic
+    const openReportModalBtn = document.getElementById('openReportModalBtn');
+    const reportModal = document.getElementById('reportModal');
+    const closeReportModal = document.querySelector('#reportModal .close');
+    if (openReportModalBtn) {
+        openReportModalBtn.onclick = function() {
+            reportModal.style.display = 'block';
+            // Set current time when modal opens
+            setCurrentTime();
+        };
+    }
+    if (closeReportModal) {
+        closeReportModal.onclick = function() {
+            reportModal.style.display = 'none';
+        };
+    }
+    window.onclick = function(event) {
+        if (event.target == reportModal) {
+            reportModal.style.display = 'none';
+        }
+    };
+
+    // Function to set current time
+    function setCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+        document.getElementById('reportTime').value = timeString;
+        
+        // Pre-fill reported by with user name from dashboard
+        const userName = document.getElementById('userName').textContent;
+        document.getElementById('reportedBy').value = userName;
+    }
+
+    // Camera functionality
+    let stream = null;
+    const capturePhotoBtn = document.getElementById('capturePhotoBtn');
+    const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+    const photoFileInput = document.getElementById('photoFileInput');
+    const retakePhotoBtn = document.getElementById('retakePhotoBtn');
+    const removePhotoBtn = document.getElementById('removePhotoBtn');
+    const cameraVideo = document.getElementById('cameraVideo');
+    const photoCanvas = document.getElementById('photoCanvas');
+    const photoPreview = document.getElementById('photoPreview');
+    const capturedImage = document.getElementById('capturedImage');
+
+    // Upload photo functionality
+    uploadPhotoBtn.addEventListener('click', function() {
+        photoFileInput.click();
+    });
+
+    photoFileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                capturedImage.src = e.target.result;
+                photoPreview.style.display = 'block';
+                capturePhotoBtn.style.display = 'none';
+                uploadPhotoBtn.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Start camera when "Take Photo" is clicked
+    capturePhotoBtn.addEventListener('click', async function() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment', // Use back camera on mobile
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            });
+            cameraVideo.srcObject = stream;
+            cameraVideo.style.display = 'block';
+            capturePhotoBtn.style.display = 'none';
+            uploadPhotoBtn.style.display = 'none';
+            
+            // Add capture button
+            const snapBtn = document.createElement('button');
+            snapBtn.type = 'button';
+            snapBtn.className = 'capture-btn';
+            snapBtn.innerHTML = '<i class="fas fa-camera"></i> Snap Photo';
+            snapBtn.onclick = capturePhoto;
+            cameraVideo.parentNode.appendChild(snapBtn);
+        } catch (err) {
+            console.error('Error accessing camera:', err);
+            alert('Unable to access camera. Please make sure you have granted camera permissions.');
+        }
+    });
+
+    // Capture photo from video stream
+    function capturePhoto() {
+        const context = photoCanvas.getContext('2d');
+        photoCanvas.width = cameraVideo.videoWidth;
+        photoCanvas.height = cameraVideo.videoHeight;
+        context.drawImage(cameraVideo, 0, 0, photoCanvas.width, photoCanvas.height);
+        
+        // Convert canvas to image
+        const imageData = photoCanvas.toDataURL('image/jpeg');
+        capturedImage.src = imageData;
+        
+        // Stop camera stream
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        
+        // Hide video and show preview
+        cameraVideo.style.display = 'none';
+        photoPreview.style.display = 'block';
+        
+        // Remove snap button
+        const snapBtn = cameraVideo.parentNode.querySelector('.capture-btn:last-child');
+        if (snapBtn) snapBtn.remove();
+    }
+
+    // Retake photo
+    retakePhotoBtn.addEventListener('click', function() {
+        photoPreview.style.display = 'none';
+        capturePhotoBtn.style.display = 'block';
+        uploadPhotoBtn.style.display = 'block';
+        capturedImage.src = '';
+        photoFileInput.value = '';
+    });
+
+    // Remove photo
+    removePhotoBtn.addEventListener('click', function() {
+        photoPreview.style.display = 'none';
+        capturePhotoBtn.style.display = 'block';
+        uploadPhotoBtn.style.display = 'block';
+        capturedImage.src = '';
+        photoFileInput.value = '';
+    });
+
+    // Handle form submission
+    document.getElementById('reportForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const binId = document.getElementById('binId').value.trim();
+        const reportedBy = document.getElementById('reportedBy').value.trim();
+        const reportTime = document.getElementById('reportTime').value;
+        const comments = document.getElementById('comments').value.trim();
+        const photo = capturedImage.src;
+        
+        // Validate required fields
+        let isValid = true;
+        const photoRequired = document.getElementById('photoRequired');
+        
+        // Check Bin ID
+        if (!binId) {
+            document.getElementById('binId').style.borderColor = '#F44336';
+            isValid = false;
+        } else {
+            document.getElementById('binId').style.borderColor = '';
+        }
+        
+        // Check Reported By
+        if (!reportedBy) {
+            document.getElementById('reportedBy').style.borderColor = '#F44336';
+            isValid = false;
+        } else {
+            document.getElementById('reportedBy').style.borderColor = '';
+        }
+        
+        // Check Photo
+        if (!photo) {
+            photoRequired.style.display = 'block';
+            isValid = false;
+        } else {
+            photoRequired.style.display = 'none';
+        }
+        
+        if (!isValid) {
+            alert('Please fill in all required fields (*) including taking or uploading a photo.');
+            return;
+        }
+        
+        const formData = {
+            binId: binId,
+            reportedBy: reportedBy,
+            reportTime: reportTime,
+            comments: comments,
+            photo: photo
+        };
+        
+        console.log('Report submitted:', formData);
+        alert('Report submitted successfully!');
+        
+        // Reset form and close modal
+        this.reset();
+        photoPreview.style.display = 'none';
+        capturePhotoBtn.style.display = 'block';
+        uploadPhotoBtn.style.display = 'block';
+        capturedImage.src = '';
+        photoFileInput.value = '';
+        photoRequired.style.display = 'none';
+        
+        // Reset border colors
+        document.getElementById('binId').style.borderColor = '';
+        document.getElementById('reportedBy').style.borderColor = '';
+        
+        reportModal.style.display = 'none';
+    });
+    </script>
+</body>
+</html> 

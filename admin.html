@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Admin Dashboard</title>
+    <link rel="icon" href="images/favicon (1).ico">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-dashboard">
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="images/favicon (12).ico" alt="EcoTrack">
+                <span>EcoTrack</span>
+            </div>
+            <ul class="nav-items">
+                <li><a href="#map-section1" class="nav-link active"><i class="fas fa-map-marker-alt"></i>Map View</a></li>
+                <li><a href="#reported-bins-section" class="nav-link"><i class="fas fa-exclamation-circle"></i>Reported Bins</a></li>
+                <li><a href="#schedules-section" class="nav-link"><i class="fas fa-calendar"></i>Scheduled Pickup</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 class="page-title">Bin Management Dashboard</h1>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <img src="images/haffid-modified.png" alt="Admin Profile">
+                        <span id="adminName">Al-Hafid</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="map-section" id="map-section1">
+                    <div class="map-controls">
+                        <button id="showAllBins" class="map-control-btn active">
+                            <i class="fas fa-map-marker-alt"></i> Show All Bins
+                        </button>
+                        <button id="showFullBins" class="map-control-btn">
+                            <i class="fas fa-trash"></i> Show Full Bins
+                        </button>
+                    </div>
+                    <div id="map"></div>
+                    <div class="legend">
+                        <h3>Legend</h3>
+                        <div class="legend-item">
+                            <span class="legend-dot full"></span>
+                            <span>Full</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot empty"></span>
+                            <span>Empty</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reported-bins-section" class="reported-bins-section card-section">
+                    <div class="section-header">
+                        <h2>Reported Full Bins</h2>
+                        <!-- <button class="refresh-btn" id="refreshReports">
+                            <i class="fas fa-sync-alt"></i>
+                        </button> -->
+                    </div>
+                    <div class="section-content">
+                        <div class="table-responsive">
+                            <table id="reportedBinsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Bin ID</th>
+                                        <th>Reported By</th>
+                                        <th>Time</th>
+                                        <th>Comment</th>
+                                        <th>Picture</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>BIN001</td>
+                                        <td>Rashid Tobrazune</td>
+                                        <td>2 hours ago</td>
+                                        <td>Bin is completely full and overflowing</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN001', 'Rashid Tobrazune', '2 hours ago', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN002</td>
+                                        <td>Hafiz Ashanti</td>
+                                        <td>1 hour ago</td>
+                                        <td>Waste is piling up around the bin</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN002', 'Hafiz Ashanti', '1 hour ago', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN003</td>
+                                        <td>Wudiya Seidu</td>
+                                        <td>30 min ago</td>
+                                        <td>Bin needs immediate attention</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN003', 'Wudiya Seidu', '30 min ago', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN004</td>
+                                        <td>Karina Winsakiya</td>
+                                        <td>10 min ago</td>
+                                        <td>Overflowing with recyclables</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN004', 'Karina Winsakiya', '10 min ago', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN005</td>
+                                        <td>Azariah James</td>
+                                        <td>5 min ago</td>
+                                        <td>Bin is at maximum capacity</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN005', 'Azariah James', '5 min ago', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN006</td>
+                                        <td>Ariana Eyram</td>
+                                        <td>just now</td>
+                                        <td>Urgent pickup needed</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN006', 'Ariana Eyram', 'just now', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN007</td>
+                                        <td>Hakeem Yakub</td>
+                                        <td>yesterday</td>
+                                        <td>Bin has been full for days</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN007', 'Hakeem Yakub', 'yesterday', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIN008</td>
+                                        <td>Fatima Seidu</td>
+                                        <td>2 days ago</td>
+                                        <td>Waste scattered around bin</td>
+                                        <td><div class="photo-indicator" onclick="showPhotoModal('BIN008', 'Fatima Seidu', '2 days ago', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500')"><i class="fas fa-image"></i> View</div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="schedules-section" class="schedules-section card-section">
+                    <div class="section-header">
+                        <h2>Upcoming Pickups</h2>
+                        <!-- <button class="add-schedule-btn" id="addScheduleBtn">
+                            <i class="fas fa-plus"></i> New Schedule
+                        </button> -->
+                    </div>
+                    <div class="section-content">
+                        <div class="schedule-list" id="scheduleList">
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN002</span>
+                                    <span class="schedule-time">2024-01-21 at 09:00</span>
+                                </div>
+                                <div class="status pending">pending</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN005</span>
+                                    <span class="schedule-time">2024-01-22 at 10:30</span>
+                                </div>
+                                <div class="status scheduled">scheduled</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN003</span>
+                                    <span class="schedule-time">2024-01-23 at 08:15</span>
+                                </div>
+                                <div class="status pending">pending</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN007</span>
+                                    <span class="schedule-time">2024-01-24 at 11:00</span>
+                                </div>
+                                <div class="status scheduled">scheduled</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN001</span>
+                                    <span class="schedule-time">2024-01-25 at 07:45</span>
+                                </div>
+                                <div class="status completed">completed</div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="bin-info">
+                                    <span class="bin-id">BIN008</span>
+                                    <span class="schedule-time">2024-01-26 at 13:20</span>
+                                </div>
+                                <div class="status pending">pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Schedule Pickup</h2>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="binId">Bin ID</label>
+                    <input type="text" id="binId" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickupDate">Pickup Date</label>
+                    <input type="date" id="pickupDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickupTime">Pickup Time</label>
+                    <input type="time" id="pickupTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Schedule Pickup</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content photo-modal-content">
+            <span class="close">&times;</span>
+            <h2>Bin Photo</h2>
+            <div class="photo-container">
+                <img id="modalPhoto" src="" alt="Bin Photo" class="modal-photo">
+            </div>
+            <div class="photo-info">
+                <p><strong>Bin ID:</strong> <span id="modalBinId"></span></p>
+                <p><strong>Reported By:</strong> <span id="modalReportedBy"></span></p>
+                <p><strong>Time:</strong> <span id="modalTime"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/admin.js"></script>
+    
+    <script>
+    // Navigation active state management
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section, .map-section, .card-section');
+        
+        // Function to update active navigation
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + 100; // Offset for better detection
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    // Remove active class from all nav links
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    // Add active class to corresponding nav link
+                    if (navLinks[index]) {
+                        navLinks[index].classList.add('active');
+                    }
+                }
+            });
+        }
+        
+        // Handle navigation clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Smooth scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Update active nav on scroll
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Initial call to set correct active state
+        updateActiveNav();
+    });
+
+    // Photo modal functionality
+    function showPhotoModal(binId, reportedBy, time, photoUrl) {
+        const photoModal = document.getElementById('photoModal');
+        const modalPhoto = document.getElementById('modalPhoto');
+        const modalBinId = document.getElementById('modalBinId');
+        const modalReportedBy = document.getElementById('modalReportedBy');
+        const modalTime = document.getElementById('modalTime');
+        
+        // Set modal content
+        modalPhoto.src = photoUrl;
+        modalBinId.textContent = binId;
+        modalReportedBy.textContent = reportedBy;
+        modalTime.textContent = time;
+        
+        // Show modal
+        photoModal.style.display = 'block';
+    }
+
+    // Modal close functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const modals = document.querySelectorAll('.modal');
+        const closeBtns = document.querySelectorAll('.modal .close');
+        
+        // Close modal when clicking close button
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                modal.style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html> 
